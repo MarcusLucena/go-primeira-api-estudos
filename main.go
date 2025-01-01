@@ -67,5 +67,24 @@ func main() {
 		})
 	})
 
+	// Deletar tarefa pelo Id
+	router.DELETE("/tarefas/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+
+		for index, task := range taskList {
+			if fmt.Sprintf("%d", task.Id) == id {
+				taskList = append(taskList[:index], taskList[index+1:]...)
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Tarefa deletada com sucesso!",
+				})
+				return
+			}
+		}
+
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"message": "Id não encontrado",
+		})
+	})
+
 	router.Run(":3000")
 }
