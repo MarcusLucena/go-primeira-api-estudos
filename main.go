@@ -86,5 +86,33 @@ func main() {
 		})
 	})
 
+	// Atualizar tarefa pelo Id
+	router.PUT("/tarefas/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+
+		var updateTask Tasks
+
+		if err := ctx.BindJSON(&updateTask); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"message": "Formato dos dados invalido",
+			})
+			return
+		}
+
+		for index, task := range taskList {
+			if fmt.Sprintf("%d", task.Id) == id {
+				taskList[index] = updateTask
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Tarega atualizada com sucesso!",
+					"tarefa":  task.Title,
+				})
+			}
+		}
+
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"message": "Id não encontrado",
+		})
+	})
+
 	router.Run(":3000")
 }
