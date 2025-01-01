@@ -101,6 +101,7 @@ func main() {
 
 		for index, task := range taskList {
 			if fmt.Sprintf("%d", task.Id) == id {
+				updateTask.Id = task.Id
 				taskList[index] = updateTask
 				ctx.JSON(http.StatusOK, gin.H{
 					"message": "Tarega atualizada com sucesso!",
