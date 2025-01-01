@@ -51,5 +51,21 @@ func main() {
 		ctx.JSON(http.StatusOK, newTask)
 	})
 
+	// Buscar tarefa pelo ID
+	router.GET("/tarefas/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+
+		for _, task := range taskList {
+			if fmt.Sprintf("%d", task.Id) == id {
+				ctx.JSON(http.StatusOK, task)
+				return
+			}
+		}
+
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"message": "Id não encontrado",
+		})
+	})
+
 	router.Run(":3000")
 }
